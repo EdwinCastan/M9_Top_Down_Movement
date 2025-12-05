@@ -1,26 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://p75euy1gcr34"]
 
+[ext_resource type="Script" uid="uid://bn5ugfub7hspp" path="res://lessons/runner.gd" id="1_h1hi2"]
 [ext_resource type="Texture2D" uid="uid://c0i1ik45p7rhh" path="res://assets/runner_down.png" id="1_puh4d"]
-
-[sub_resource type="GDScript" id="GDScript_puh4d"]
-script/source = "extends CharacterBody2D
-
-var max_speed := 600.0
-
-func _physics_process(delta: float) -> void:
-	var direction := Input.get_vector(\"move_left\", \"move_right\", \"move_up\", \"move_down\")
-	velocity = direction * max_speed
-	move_and_slide()
-"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h1hi2"]
 radius = 21.095022
 
 [node name="runner" type="CharacterBody2D"]
 motion_mode = 1
-script = SubResource("GDScript_puh4d")
+script = ExtResource("1_h1hi2")
 
 [node name="skin" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 texture = ExtResource("1_puh4d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
