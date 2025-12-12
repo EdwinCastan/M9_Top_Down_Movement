@@ -46,20 +46,22 @@ script = ExtResource("1_h1hi2")
 
 [node name="shadow" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 0.23529412)
-position = Vector2(0, 40)
+position = Vector2(0, -13)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_ipi7s")
 
 [node name="dust" type="GPUParticles2D" parent="."]
+position = Vector2(0, -53)
 emitting = false
 texture = ExtResource("3_x5rx3")
 process_material = SubResource("ParticleProcessMaterial_28xeg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 37)
+position = Vector2(0, -16)
 shape = SubResource("CircleShape2D_h1hi2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -53)
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -72,4 +74,5 @@ scale = Vector2(0.5, 0.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_x5rx3")
+position = Vector2(0, -53)
 texture = SubResource("ViewportTexture_cl8lt")
