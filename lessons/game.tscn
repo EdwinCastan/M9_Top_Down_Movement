@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://c62bk8cggi6yq"]
+[gd_scene load_steps=9 format=3 uid="uid://c62bk8cggi6yq"]
 
 [ext_resource type="Texture2D" uid="uid://5vl7p0xb7nd8" path="res://assets/circuit_background.png" id="1_gkp25"]
 [ext_resource type="PackedScene" uid="uid://p75euy1gcr34" path="res://lessons/runner.tscn" id="1_yasw7"]
 [ext_resource type="PackedScene" uid="uid://l5vkm11cgaib" path="res://lessons/simple_obstacle.tscn" id="2_4o7yg"]
 [ext_resource type="PackedScene" uid="uid://2vevaoq3kfo0" path="res://lessons/circut.tscn" id="4_sepuf"]
 [ext_resource type="PackedScene" uid="uid://xl56q8amb611" path="res://assets/finish_line/finish_line.tscn" id="5_sepuf"]
+[ext_resource type="Theme" uid="uid://cdcyvsn1fp8wa" path="res://assets/countdown/count_down_theme.tres" id="6_cpqg5"]
+[ext_resource type="Script" uid="uid://57e8080cpukf" path="res://assets/countdown/count_down.gd" id="7_viysf"]
 
 [sub_resource type="GDScript" id="GDScript_sepuf"]
 script/source = "extends Node2D
 @onready var _finish_line: FinishLine = %FinishLine
+@onready var _runner: Runner = %runner
+@onready var _count_down: CountDown = %CountDown
 
 func _ready() -> void:
 	_finish_line.body_entered.connect(func (body: Node) -> void:
@@ -28,6 +32,13 @@ func _ready() -> void:
 	_finish_line.confettis_finished.connect(
 			get_tree().reload_current_scene.call_deferred
 		)
+	_count_down.start_counting()
+	_runner.set_physics_process(false)
+	_count_down.counting_finished.connect(
+		func() -> void:
+			_runner.set_physics_process(true)
+		
+	)
 "
 
 [node name="Game" type="Node2D"]
@@ -36,6 +47,7 @@ position = Vector2(980, 570)
 script = SubResource("GDScript_sepuf")
 
 [node name="runner" parent="." instance=ExtResource("1_yasw7")]
+unique_name_in_owner = true
 position = Vector2(11, -127)
 
 [node name="CircutBG" type="Sprite2D" parent="."]
@@ -63,3 +75,27 @@ position = Vector2(-1337, 176)
 unique_name_in_owner = true
 position = Vector2(448, 208)
 area_width = 256
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CountDown" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -436.5
+offset_top = -109.5
+offset_right = 436.5
+offset_bottom = 109.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_cpqg5")
+text = "countdown"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_viysf")
+autostart = true
+metadata/_custom_type_script = "uid://57e8080cpukf"
+metadata/_edit_use_anchors_ = true
