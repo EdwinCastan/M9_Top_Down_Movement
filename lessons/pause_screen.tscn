@@ -1,0 +1,115 @@
+[gd_scene load_steps=8 format=3 uid="uid://dj6ye05dbiqpi"]
+
+[ext_resource type="FontFile" uid="uid://vxbfcnef0pvq" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="1_6f8pp"]
+[ext_resource type="Shader" uid="uid://dp1hn66gsihpv" path="res://assets/blur.gdshader" id="2_vtnhc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l282"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08337446, 0.00010425121, 0.22789878, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qb0gi"]
+bg_color = Color(0.09403146, 0.13367856, 0.26890707, 0.44313726)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="Theme" id="Theme_okwwg"]
+default_font = ExtResource("1_6f8pp")
+default_font_size = 42
+Button/styles/normal = SubResource("StyleBoxFlat_2l282")
+Label/font_sizes/font_size = 64
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_qb0gi")
+
+[sub_resource type="GDScript" id="GDScript_6f8pp"]
+script/source = "@tool
+extends Control
+
+@onready var _blur_color_rect: ColorRect = %BlurColorRect
+@onready var _ui_panel_container: PanelContainer = %UIPanelContainer
+
+@export_range(0, 1.0) var menu_opened_amount := 0.0:
+	set = set_menu_opened_amount
+
+func set_menu_opened_amount(amount: float) -> void:
+	menu_opened_amount = amount
+	visible = amount > 0
+	if _ui_panel_container == null or _blur_color_rect == null:
+		return
+	_blur_color_rect.material.set_shader_parameter(\"blur_amount\", lerp(0.0, 1.5, amount))
+	_blur_color_rect.material.set_shader_parameter(\"saturation\", lerp(1.0, 0.3, amount))
+	_ui_panel_container.modulate.a = amount
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jtw2t"]
+shader = ExtResource("2_vtnhc")
+shader_parameter/blur_amount = 0.0
+shader_parameter/tint = Color(0, 0, 0, 1)
+shader_parameter/tint_strength = 0.110000005225
+shader_parameter/saturation = 1.0
+
+[node name="pausescreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_okwwg")
+script = SubResource("GDScript_6f8pp")
+
+[node name="BlurColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_jtw2t")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UIPanelContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -274.875
+offset_top = -198.25
+offset_right = 274.875
+offset_bottom = 198.25
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIPanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UIPanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "PAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="UIPanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIPanelContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="UIPanelContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "resume"
+
+[node name="QuitButton" type="Button" parent="UIPanelContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "quit"
