@@ -102,4 +102,4 @@ metadata/_custom_type_script = "uid://57e8080cpukf"
 metadata/_edit_use_anchors_ = true
 
 [node name="pausescreen" parent="CanvasLayer" instance=ExtResource("8_viysf")]
-visible = false
+menu_opened_amount = 0.82
